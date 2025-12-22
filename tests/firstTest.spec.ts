@@ -76,7 +76,7 @@ test("locating parent elements", async ({ page }) => {
     .click();
   await page
     .locator("nb-card")
-    .filter({ has: page.locator(".status-danger")})
+    .filter({ has: page.locator(".status-danger") })
     .getByRole("textbox", { name: "Email" })
     .click();
   await page
@@ -91,37 +91,42 @@ test("locating parent elements", async ({ page }) => {
     .getByRole("textbox", { name: "Email" })
     .click();
 });
-test("extract values",async ({page})=>{
+test("extract values", async ({ page }) => {
   // single text value
-  const basicForm=page.locator('nb-card').filter({hasText:'Basic form'});
-  const buttonText=await basicForm.locator('button').textContent();
-  expect(buttonText).toBe('Submit');
+  const basicForm = page.locator("nb-card").filter({ hasText: "Basic form" });
+  const buttonText = await basicForm.locator("button").textContent();
+  expect(buttonText).toBe("Submit");
 
   // All text values
-  const allRadioButtonLabels=await page.locator('nb-card nb-radio').allTextContents();
-  expect(allRadioButtonLabels).toContain('Option 1');
+  const allRadioButtonLabels = await page
+    .locator("nb-card nb-radio")
+    .allTextContents();
+  expect(allRadioButtonLabels).toContain("Option 1");
 
   // input value
-  const emailField=basicForm.getByRole('textbox',{name:'Email'});
-  await emailField.fill('test@example.com');
-  const emailValue=await emailField.inputValue();
-  expect(emailValue).toEqual('test@example.com');
+  const emailField = basicForm.getByRole("textbox", { name: "Email" });
+  await emailField.fill("test@example.com");
+  const emailValue = await emailField.inputValue();
+  expect(emailValue).toEqual("test@example.com");
 
-  const placeholderVal=await emailField.getAttribute('placeholder');
-  expect(placeholderVal).toEqual('Email');
-})
-test("assertions",async ({page})=>{
-  const basicFormButton=await page.locator('nb-card').filter({hasText:'Basic form'}).locator('button');
+  const placeholderVal = await emailField.getAttribute("placeholder");
+  expect(placeholderVal).toEqual("Email");
+});
+test("assertions", async ({ page }) => {
+  const basicFormButton = await page
+    .locator("nb-card")
+    .filter({ hasText: "Basic form" })
+    .locator("button");
 
   // general assertion
-  const number=5;
+  const number = 5;
   expect(number).toBe(5);
 
   // locator assertion
   await expect(basicFormButton).toBeVisible();
-  await expect(basicFormButton).toHaveText('Submit');
+  await expect(basicFormButton).toHaveText("Submit");
 
   // soft assertion: wait for 5s and won't break the test if it fails
-  await expect.soft(basicFormButton).toHaveText('Submit')
+  await expect.soft(basicFormButton).toHaveText("Submit");
   await basicFormButton.click();
-})
+});
