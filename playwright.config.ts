@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   // Timeout for each test in milliseconds. Defaults to 30 seconds.
-  timeout:10000,
+  // timeout:10000,
   // Configuration for the expect assertion timeouts.
   expect: {
     timeout: 5000
