@@ -29,39 +29,82 @@ test.describe("form layout page", () => {
     await expect(usingTheGridEmailInput).toHaveValue("test2@example.com");
   });
 
-  test('radio buttons',async ({page})=>{
-    const usingTheGridForm = page
-      .locator("nb-card", { hasText: "Using the Grid" });
+  test("radio buttons", async ({ page }) => {
+    const usingTheGridForm = page.locator("nb-card", {
+      hasText: "Using the Grid",
+    });
 
     // await usingTheGridForm.getByLabel('Option 1').check({force:true})
-    await usingTheGridForm.getByRole('radio',{name:'Option 1'}).check({force:true});
+    await usingTheGridForm
+      .getByRole("radio", { name: "Option 1" })
+      .check({ force: true });
 
     // generic assertion
     // const radioStatus=await usingTheGridForm.getByRole('radio',{name:'Option 1'}).isChecked();
-    // expect(radioStatus).toBeTruthy(); 
+    // expect(radioStatus).toBeTruthy();
 
     // locator assertion
-    await expect(usingTheGridForm.getByRole('radio',{name:'Option 1'})).toBeChecked();
+    await expect(
+      usingTheGridForm.getByRole("radio", { name: "Option 1" })
+    ).toBeChecked();
 
-    await usingTheGridForm.getByRole('radio',{name:'Option 2'}).check({force:true});
-    expect(await usingTheGridForm.getByRole('radio',{name:'Option 1'}).isChecked()).toBeFalsy();
-    expect(await usingTheGridForm.getByRole('radio',{name:'Option 2'}).isChecked()).toBeTruthy();
-  })
+    await usingTheGridForm
+      .getByRole("radio", { name: "Option 2" })
+      .check({ force: true });
+    expect(
+      await usingTheGridForm
+        .getByRole("radio", { name: "Option 1" })
+        .isChecked()
+    ).toBeFalsy();
+    expect(
+      await usingTheGridForm
+        .getByRole("radio", { name: "Option 2" })
+        .isChecked()
+    ).toBeTruthy();
+  });
 });
 
-test('checkbox',async({page})=>{
-  await page.getByText('Modal & Overlays').click();
-  await page.getByText('Toastr').click();
+test("checkbox", async ({ page }) => {
+  await page.getByText("Modal & Overlays").click();
+  await page.getByText("Toastr").click();
   // check() method doesn't work when a checkbox is checked; click() doesn't check status
   // await page.getByRole('checkbox',{name:'Hide on click'}).click({force:true})
-  await page.getByRole('checkbox',{name:'Prevent arising of duplicate toast'}).check({force:true})
+  await page
+    .getByRole("checkbox", { name: "Prevent arising of duplicate toast" })
+    .check({ force: true });
   // await page.getByRole('checkbox',{name:'Show toast with icon'}).uncheck({force:true})
 
   // uncheck all checkboxes
-  const allCheckboxes=page.getByRole('checkbox');
-  for (const checkbox of await allCheckboxes.all()){
-    await checkbox.uncheck({force:true});
+  const allCheckboxes = page.getByRole("checkbox");
+  for (const checkbox of await allCheckboxes.all()) {
+    await checkbox.uncheck({ force: true });
     expect(await checkbox.isChecked()).toBeFalsy();
   }
-}
-)
+});
+test("lists and dropdowns",async({page})=>{
+  const dropDownMenu=page.locator("ngx-header nb-select")
+  await dropDownMenu.click();
+
+  page.getByRole('list');
+  page.getByRole("listitem");
+
+  const optionList=page.locator("nb-option-list nb-option");
+  await expect(optionList).toHaveText([" Light", " Dark"," Cosmic"," Corporate",])
+  await optionList.filter({hasText:'Dark'}).click();
+
+  const header=page.locator('nb-layout-header');
+  await expect(header).toHaveCSS('background-color','rgb(34, 43, 69)');
+  const colors={
+    "Light":"rgb(255, 255, 255)",
+    "Dark":"rgb(34, 43, 69)",
+    "Cosmic":"rgb(50, 50, 89)",
+    "Corporate":"rgb(255, 255, 255)"
+  }
+  await dropDownMenu.click();
+  for (const color in colors){
+    await optionList.filter({hasText:color}).click();
+    await expect(header).toHaveCSS('background-color',colors[color]);
+    if(color !=="Corporate"){
+      await dropDownMenu.click();}
+  }
+})
