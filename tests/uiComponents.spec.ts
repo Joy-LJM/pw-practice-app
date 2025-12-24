@@ -108,3 +108,17 @@ test("lists and dropdowns",async({page})=>{
       await dropDownMenu.click();}
   }
 })
+test("tooltips",async({page})=>{
+  await page.getByText('Modal & Overlays').click()
+  await page.getByText('Tooltip').click()
+
+  const toolTipcard=page.locator('nb-card',{hasText:'Tooltip Placements'});
+  await toolTipcard.getByRole("button",{name:'Top'}).hover();
+
+  // page.getByRole('tooltip');
+  const tooltip=await page.locator('nb-tooltip').textContent();
+  // shortcut for inspect tooltip text in browser: source tab-> hover on the element and double click F8 key on windows to froze the browser to enable tooltip available in DOM
+  expect(tooltip).toBe('This is a tooltip');
+
+
+})
