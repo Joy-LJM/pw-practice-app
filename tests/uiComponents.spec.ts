@@ -81,44 +81,69 @@ test("checkbox", async ({ page }) => {
     expect(await checkbox.isChecked()).toBeFalsy();
   }
 });
-test("lists and dropdowns",async({page})=>{
-  const dropDownMenu=page.locator("ngx-header nb-select")
+test("lists and dropdowns", async ({ page }) => {
+  const dropDownMenu = page.locator("ngx-header nb-select");
   await dropDownMenu.click();
 
-  page.getByRole('list');
+  page.getByRole("list");
   page.getByRole("listitem");
 
-  const optionList=page.locator("nb-option-list nb-option");
-  await expect(optionList).toHaveText([" Light", " Dark"," Cosmic"," Corporate",])
-  await optionList.filter({hasText:'Dark'}).click();
+  const optionList = page.locator("nb-option-list nb-option");
+  await expect(optionList).toHaveText([
+    " Light",
+    " Dark",
+    " Cosmic",
+    " Corporate",
+  ]);
+  await optionList.filter({ hasText: "Dark" }).click();
 
-  const header=page.locator('nb-layout-header');
-  await expect(header).toHaveCSS('background-color','rgb(34, 43, 69)');
-  const colors={
-    "Light":"rgb(255, 255, 255)",
-    "Dark":"rgb(34, 43, 69)",
-    "Cosmic":"rgb(50, 50, 89)",
-    "Corporate":"rgb(255, 255, 255)"
-  }
+  const header = page.locator("nb-layout-header");
+  await expect(header).toHaveCSS("background-color", "rgb(34, 43, 69)");
+  const colors = {
+    Light: "rgb(255, 255, 255)",
+    Dark: "rgb(34, 43, 69)",
+    Cosmic: "rgb(50, 50, 89)",
+    Corporate: "rgb(255, 255, 255)",
+  };
   await dropDownMenu.click();
-  for (const color in colors){
-    await optionList.filter({hasText:color}).click();
-    await expect(header).toHaveCSS('background-color',colors[color]);
-    if(color !=="Corporate"){
-      await dropDownMenu.click();}
+  for (const color in colors) {
+    await optionList.filter({ hasText: color }).click();
+    await expect(header).toHaveCSS("background-color", colors[color]);
+    if (color !== "Corporate") {
+      await dropDownMenu.click();
+    }
   }
-})
-test("tooltips",async({page})=>{
-  await page.getByText('Modal & Overlays').click()
-  await page.getByText('Tooltip').click()
+});
+test("tooltips", async ({ page }) => {
+  await page.getByText("Modal & Overlays").click();
+  await page.getByText("Tooltip").click();
 
-  const toolTipcard=page.locator('nb-card',{hasText:'Tooltip Placements'});
-  await toolTipcard.getByRole("button",{name:'Top'}).hover();
+  const toolTipcard = page.locator("nb-card", {
+    hasText: "Tooltip Placements",
+  });
+  await toolTipcard.getByRole("button", { name: "Top" }).hover();
 
   // page.getByRole('tooltip');
-  const tooltip=await page.locator('nb-tooltip').textContent();
+  const tooltip = await page.locator("nb-tooltip").textContent();
   // shortcut for inspect tooltip text in browser: source tab-> hover on the element and double click F8 key on windows to froze the browser to enable tooltip available in DOM
-  expect(tooltip).toBe('This is a tooltip');
+  expect(tooltip).toEqual("This is a tooltip");
+});
+test("window dialog box action confirm", async ({ page }) => {
+  await page.getByText("Tables & Data").click();
+  await page.getByText("Smart Table").click();
 
+  // listener for dialog box
+  page.on("dialog", (dialog) => {
+    expect(dialog.message()).toEqual("Are you sure you want to delete?");
+    dialog.accept();
+  });
 
-})
+  await page
+    .getByRole("table")
+    .locator("tr", { hasText: "mdo@gmail.com" })
+    .locator(".nb-trash")
+    .click();
+  await expect(page.locator("table tr").first()).not.toHaveText(
+    "mdo@gmail.com"
+  );
+});
