@@ -163,7 +163,7 @@ test("web tables data update", async ({ page }) => {
   // 2. get the row based on the value in the specific column while same values existing in different rows
   await page.locator(".ng2-smart-pagination-nav").getByText("2").click();
   const targetRowById = page
-    .getByRole("row", { name: "11" })//2 rows have id 11 in the second column
+    .getByRole("row", { name: "11" }) //2 rows have id 11 in the second column
     .filter({ has: page.locator("td").nth(1).getByText("11") }); //get id 11 in the second column
   await targetRowById.locator(".nb-edit").click();
   await page.locator("input-editor").getByPlaceholder("E-mail").clear();
@@ -173,4 +173,22 @@ test("web tables data update", async ({ page }) => {
     .fill("test@gmail.com");
   await page.locator(".nb-checkmark").click();
   await expect(targetRowById.locator("td").nth(5)).toHaveText("test@gmail.com");
+
+  // 3. test filter of the table
+  const ages = ["20", "30", "40", "300"];
+  for (let age of ages) {
+    await page.locator("input-filter").getByPlaceholder("Age").clear();
+    await page.locator("input-filter").getByPlaceholder("Age").fill(age);
+    await page.waitForTimeout(500);
+
+    const ageRows = page.locator("tbody tr");
+    for (let row of await ageRows.all()) {
+      const cellVal = await row.locator("td").last().textContent();
+      if (age == "300") {
+        expect(await page.locator("tbody").textContent()).toContain("No data found");
+      } else {
+        expect(cellVal).toEqual(age);
+      }
+    }
+  }
 });
