@@ -192,3 +192,31 @@ test("web tables data update", async ({ page }) => {
     }
   }
 });
+test('datepicker',async({page})=>{
+    await page.getByText("Forms").click();
+    await page.getByText("Datepicker").click();
+
+    const calendarInputField=page.getByPlaceholder('Form Picker');
+    await calendarInputField.click();
+
+    let date=new Date();
+    date.setDate(date.getDate()+200);
+    const expectedDate=date.getDate().toString();
+    const expectedMonthShort=date.toLocaleString('En-US',{month:'short'});
+    const expectedMonthLong=date.toLocaleString('En-US',{month:'long'});
+    const expectedYear=date.getFullYear();
+    const dateToAssert=`${expectedMonthShort} ${expectedDate}, ${expectedYear}`
+
+    // update calendar month and year as expected date
+    let calendarMonthAndYear=await page.locator('nb-calendar-view-mode').textContent();
+    const expectedMonthAndYear=` ${expectedMonthLong} ${expectedYear} `;
+    //loop until the calendar month and year matches with expected date 
+    while(calendarMonthAndYear!==expectedMonthAndYear){
+      await page.locator('[data-name="chevron-right"]').click();
+       calendarMonthAndYear=await page.locator('nb-calendar-view-mode').textContent();
+    }
+
+    await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate,{exact:true}).click();//1 is partial match so use exact:true to match exactly 1
+
+    await expect(calendarInputField).toHaveValue(dateToAssert);
+})
