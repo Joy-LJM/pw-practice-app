@@ -185,38 +185,78 @@ test("web tables data update", async ({ page }) => {
     for (let row of await ageRows.all()) {
       const cellVal = await row.locator("td").last().textContent();
       if (age == "300") {
-        expect(await page.locator("tbody").textContent()).toContain("No data found");
+        expect(await page.locator("tbody").textContent()).toContain(
+          "No data found"
+        );
       } else {
         expect(cellVal).toEqual(age);
       }
     }
   }
 });
-test('datepicker',async({page})=>{
-    await page.getByText("Forms").click();
-    await page.getByText("Datepicker").click();
+test("datepicker", async ({ page }) => {
+  await page.getByText("Forms").click();
+  await page.getByText("Datepicker").click();
 
-    const calendarInputField=page.getByPlaceholder('Form Picker');
-    await calendarInputField.click();
+  const calendarInputField = page.getByPlaceholder("Form Picker");
+  await calendarInputField.click();
 
-    let date=new Date();
-    date.setDate(date.getDate()+200);
-    const expectedDate=date.getDate().toString();
-    const expectedMonthShort=date.toLocaleString('En-US',{month:'short'});
-    const expectedMonthLong=date.toLocaleString('En-US',{month:'long'});
-    const expectedYear=date.getFullYear();
-    const dateToAssert=`${expectedMonthShort} ${expectedDate}, ${expectedYear}`
+  let date = new Date();
+  date.setDate(date.getDate() + 200);
+  const expectedDate = date.getDate().toString();
+  const expectedMonthShort = date.toLocaleString("En-US", { month: "short" });
+  const expectedMonthLong = date.toLocaleString("En-US", { month: "long" });
+  const expectedYear = date.getFullYear();
+  const dateToAssert = `${expectedMonthShort} ${expectedDate}, ${expectedYear}`;
 
-    // update calendar month and year as expected date
-    let calendarMonthAndYear=await page.locator('nb-calendar-view-mode').textContent();
-    const expectedMonthAndYear=` ${expectedMonthLong} ${expectedYear} `;
-    //loop until the calendar month and year matches with expected date 
-    while(calendarMonthAndYear!==expectedMonthAndYear){
-      await page.locator('[data-name="chevron-right"]').click();
-       calendarMonthAndYear=await page.locator('nb-calendar-view-mode').textContent();
-    }
+  // update calendar month and year as expected date
+  let calendarMonthAndYear = await page
+    .locator("nb-calendar-view-mode")
+    .textContent();
+  const expectedMonthAndYear = ` ${expectedMonthLong} ${expectedYear} `;
+  //loop until the calendar month and year matches with expected date
+  while (calendarMonthAndYear !== expectedMonthAndYear) {
+    await page.locator('[data-name="chevron-right"]').click();
+    calendarMonthAndYear = await page
+      .locator("nb-calendar-view-mode")
+      .textContent();
+  }
 
-    await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDate,{exact:true}).click();//1 is partial match so use exact:true to match exactly 1
+  await page
+    .locator('[class="day-cell ng-star-inserted"]')
+    .getByText(expectedDate, { exact: true })
+    .click(); //1 is partial match so use exact:true to match exactly 1
 
-    await expect(calendarInputField).toHaveValue(dateToAssert);
-})
+  await expect(calendarInputField).toHaveValue(dateToAssert);
+});
+test("sliders", async ({ page }) => {
+  // update attribute
+  // const temGauge=page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle');
+  // // Execute JavaScript code in the page, taking the matching element as an argument.
+  // await temGauge.evaluate(el=>{
+  //   el.setAttribute('cx','232.630');
+  //   el.setAttribute('cy','232.630');
+  // })
+  // await temGauge.click();
+
+  // mouse movement
+  const tempBox = page.locator(
+    '[tabtitle="Temperature"] ngx-temperature-dragger '
+  );
+  await tempBox.scrollIntoViewIfNeeded();
+  const box = await tempBox.boundingBox();
+  console.log(box.x, box.y);
+
+  const x = box.x + box.width / 2;
+  const y = box.y + box.height / 2;
+  await page.mouse.move(x, y);
+  console.log(x, y, "x y");
+
+  await page.mouse.down();
+
+  await page.mouse.move(x + 100, y);
+  await page.mouse.move(x + 100, y + 100);
+
+  await page.mouse.up();
+  await expect(tempBox).toContainText("30");
+});
