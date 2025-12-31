@@ -1,14 +1,15 @@
 import { Page } from "@playwright/test";
+import { HelperBase } from "./helperBase";
 
-export class NavigationPage {
-  readonly page: Page;
+export class NavigationPage extends HelperBase {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
   async formLayoutsPage() {
     // await this.page.getByText("Forms").click();
     await this.selectGroupMenuItem("Forms");
     await this.page.getByText("Form Layouts").click();
+    await this.waitForNumberOfSeconds(6);
   }
 
   async datepickerPage() {
@@ -19,6 +20,7 @@ export class NavigationPage {
 
     await this.selectGroupMenuItem("Forms");
     await this.page.getByText("Datepicker").click();
+    await this.waitForNumberOfSeconds(8);
   }
   async smartTablePage() {
     // await this.page.getByText("Tables & Data").click();
