@@ -1,11 +1,15 @@
 import { expect, test } from "@playwright/test";
 
+// run specific test file in parallel mode
+test.describe.configure({mode:'parallel'})
+
 test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
 
 test.describe.only("form layout page", () => {
   test.describe.configure({retries:2})
+
   test.beforeEach(async ({ page }) => {
     await page.getByText("Forms").click();
     await page.getByText("Form Layouts").click();
@@ -24,7 +28,7 @@ test.describe.only("form layout page", () => {
 
     // generic assertion
     const inputVal = await usingTheGridEmailInput.inputValue();
-    expect(inputVal).toBe("test2@example.com1");
+    expect(inputVal).toBe("test2@example.com");
 
     // locator assertion
     await expect(usingTheGridEmailInput).toHaveValue("test2@example.com");
