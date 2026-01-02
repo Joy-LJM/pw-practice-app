@@ -3,7 +3,7 @@ import { PageManager } from "../page-objects/pageManager";
 import {faker} from '@faker-js/faker';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:4200/");
+  await page.goto("/");
 });
 
 test("navigate to form layout page", async ({ page }) => {
