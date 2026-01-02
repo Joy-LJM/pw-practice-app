@@ -8,7 +8,8 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve"
+    "start": "ng serve",
+    "usePageObject":"npx playwright test usePageObject.spec.ts --project=chromium && npx playwright test usePageObject.spec.ts --project=firefox"
   },
   "overrides": {
     "stylus": "github:stylus/stylus#0.54.5"
