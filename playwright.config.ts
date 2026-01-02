@@ -42,6 +42,14 @@ export default defineConfig({
     // actionTimeout:3000,
     // Default timeout for navigating to a page in milliseconds, defaults to 0
     // navigationTimeout:1000,
+    // video:'retain-on-failure'
+    video:{
+      mode:'on',
+      size:{
+        width:1920,
+        height:1080
+      }
+    }
   },
 
   /* Configure projects for major browsers */

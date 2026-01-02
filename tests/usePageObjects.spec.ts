@@ -39,6 +39,10 @@ test("parametrized methods", async ({ page }) => {
       "123456",
       "Option 1"
     );
+  await page.screenshot({path:'screenshot/formLayoutsPage.png'})
+  const buffer=await page.screenshot();
+  console.log(buffer.toString('base64'));
+  
   await pm
     .onFormLayoutsPage()
     .submitInlineFormWithNameEmailAndCheckbox(
@@ -46,4 +50,6 @@ test("parametrized methods", async ({ page }) => {
       randomEmail,
       false
     );
+  await page.locator("nb-card", { hasText: "Inline Form" }).screenshot({path:'screenshot/InlineForm.png'})
+  
 });

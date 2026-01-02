@@ -9,7 +9,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "usePageObject": "npx playwright test usePageObject.spec.ts --project=chromium && npx playwright test usePageObject.spec.ts --project=firefox"
+    "usePageObject-chrome": "npx playwright test usePageObjects.spec.ts --project=chromium",
+    "usePageObject-all": "npx playwright test usePageObjects.spec.ts --project=chromium && npx playwright test usePageObjects.spec.ts --project=firefox"
   },
   "overrides": {
     "stylus": "github:stylus/stylus#0.54.5"
