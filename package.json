@@ -10,7 +10,8 @@
     "ng": "ng",
     "start": "ng serve",
     "usePageObject-chrome": "npx playwright test usePageObjects.spec.ts --project=chromium",
-    "usePageObject-all": "npx playwright test usePageObjects.spec.ts --project=chromium && npx playwright test usePageObjects.spec.ts --project=firefox"
+    "usePageObject-all": "npx playwright test usePageObjects.spec.ts --project=chromium && npx playwright test usePageObjects.spec.ts --project=firefox",
+    "autowaiting-dev": "cross-env URL=http://uitestingplayground.com/ajax npx playwright test dragAndDropWithFrame.spec.ts --project=chromium"
   },
   "overrides": {
     "stylus": "github:stylus/stylus#0.54.5"
@@ -70,6 +71,8 @@
     "@types/node": "^12.12.70",
     "codelyzer": "^0.0.28",
     "conventional-changelog-cli": "^2.2.2",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
     "npm-run-all": "4.0.2",
     "rimraf": "2.6.1",
     "stylelint": "^15.6.0",
