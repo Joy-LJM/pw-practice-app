@@ -4,7 +4,8 @@ test.beforeEach(async ({ page }) => {
   await page.goto("http://localhost:4200/");
 });
 
-test.describe("form layout page", () => {
+test.describe.only("form layout page", () => {
+  test.describe.configure({retries:2})
   test.beforeEach(async ({ page }) => {
     await page.getByText("Forms").click();
     await page.getByText("Form Layouts").click();
@@ -23,7 +24,7 @@ test.describe("form layout page", () => {
 
     // generic assertion
     const inputVal = await usingTheGridEmailInput.inputValue();
-    expect(inputVal).toBe("test2@example.com");
+    expect(inputVal).toBe("test2@example.com1");
 
     // locator assertion
     await expect(usingTheGridEmailInput).toHaveValue("test2@example.com");
