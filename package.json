@@ -69,7 +69,7 @@
     "@playwright/test": "^1.57.0",
     "@types/leaflet": "1.2.3",
     "@types/node": "^12.12.70",
-    "codelyzer": "^0.0.28",
+    "codelyzer": "^6.0.0",
     "conventional-changelog-cli": "^2.2.2",
     "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
