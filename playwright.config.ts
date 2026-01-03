@@ -14,7 +14,7 @@ export default defineConfig({
     timeout: 5000,
   },
   // Maximum time in milliseconds the whole test suite can run
-  globalTimeout: 60000,
+  // globalTimeout: 60000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -86,4 +86,8 @@ export default defineConfig({
       },
     },
   ],
+  webServer:{
+    command: 'npm run start',
+    url:'http://localhost:4200/'
+  }
 });
