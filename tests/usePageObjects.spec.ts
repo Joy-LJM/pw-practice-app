@@ -15,7 +15,7 @@ test("navigate to form layout page", async ({ page }) => {
   await pm.navigateTo().tooltipPage();
 });
 
-test("submit grid from with credentials @block", async ({ page }) => {
+test("submit grid from with credentials", async ({ page }) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().formLayoutsPage();
