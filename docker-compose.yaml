@@ -10,3 +10,9 @@ services:
       # copy the test results and playwright report to the host machine
       - ./playwright-report/:/app/playwright-report
       - ./test-results/:/app/test-results
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
