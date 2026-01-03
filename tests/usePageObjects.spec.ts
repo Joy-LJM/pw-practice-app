@@ -15,7 +15,7 @@ test("navigate to form layout page", async ({ page }) => {
   await pm.navigateTo().tooltipPage();
 });
 
-test("submit grid from with credentials", async ({ page }) => {
+test("submit grid from with credentials @block", async ({ page }) => {
   const pm = new PageManager(page);
 
   await pm.navigateTo().formLayoutsPage();
@@ -27,7 +27,7 @@ test("submit grid from with credentials", async ({ page }) => {
       "Option 1"
     );
 });
-test("parametrized methods", async ({ page }) => {
+test("parametrized methods @smoke", async ({ page }) => {
   const pm = new PageManager(page);
   const randomFullname= faker.person.fullName();
   const randomEmail=`${randomFullname.replace(" ",'')}${faker.number.int(1000)}@test.com`
@@ -41,7 +41,7 @@ test("parametrized methods", async ({ page }) => {
     );
   await page.screenshot({path:'screenshot/formLayoutsPage.png'})
   const buffer=await page.screenshot();
-  console.log(buffer.toString('base64'));
+  // console.log(buffer.toString('base64'));
   
   await pm
     .onFormLayoutsPage()
