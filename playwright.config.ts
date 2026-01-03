@@ -79,5 +79,11 @@ export default defineConfig({
         },
       },
     },
+    {
+      name: "mobile",
+      use: {
+        ...devices["iPhone 12"],
+      },
+    },
   ],
 });
